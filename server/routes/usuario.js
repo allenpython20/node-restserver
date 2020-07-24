@@ -13,7 +13,7 @@ app.get('/usuario',function(req,res){
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({estado:false },['nombre','estado'])//segundo parametro ,filtra los campos que se queire mostrar
+    Usuario.find({estado:true },['nombre','estado'])//segundo parametro ,filtra los campos que se queire mostrar
         .skip(desde)
         .limit(limite)
         .exec((err,usuarios)=>{
@@ -24,7 +24,7 @@ app.get('/usuario',function(req,res){
                 });
             }
 
-            Usuario.count({estado:false},(err,conteo)=>{
+            Usuario.count({estado:true},(err,conteo)=>{
                 res.json({
                     ok:true,
                     usuarios,
