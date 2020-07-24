@@ -2,10 +2,12 @@ const express = require('express');
 const Usuario =require('../models/usuario');
 const bcrypt=require('bcrypt');
 const _ =require('underscore');
+
+const { verificaToken , verificaAdmin_Role } = require('../middlewares/autenticacion');
 const app = express();
 
 
-app.get('/usuario',function(req,res){
+app.get('/usuario',[verificaToken,verificaAdmin_Role], (req,res)=>{
     
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -36,10 +38,9 @@ app.get('/usuario',function(req,res){
     
 });
 
-app.post('/usuario',function(req,res){
+app.post('/usuario',[verificaToken,verificaAdmin_Role],function(req,res){
     let body = req.body;//obtener información del post
 
-    console.log(req.body)
     
     let usuario = new Usuario({
         nombre : body.nombre,
@@ -63,7 +64,7 @@ app.post('/usuario',function(req,res){
     })
 })
 
-app.put('/usuario/:id',function(req,res){
+app.put('/usuario/:id',[verificaToken,verificaAdmin_Role],function(req,res){
     let id =req.params.id;/*este id debe ser igual al del parametro*/
     let body= _.pick(req.body,["nombre","email","img","role","estado"]);//pick regresa uan copia del objeto filtrando los valores que se le indican
     Usuario.findByIdAndUpdate(id,body,{new:true,runValidators:true}, (err,usuarioDB)=>{//body->objeto que se quiere modificar,{new:true} ->nos devuelve el usuario ya modificado
@@ -86,7 +87,7 @@ app.put('/usuario/:id',function(req,res){
 })
 
 
-app.delete('/usuario/:id',function(req,res){
+app.delete('/usuario/:id',[verificaToken,verificaAdmin_Role],function(req,res){
     let id =req.params.id;
 
      // Usuario.findByIdAndDelete(id,(err,usuarioEliminado)=>{
