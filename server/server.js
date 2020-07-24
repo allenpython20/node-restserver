@@ -1,35 +1,21 @@
 require('./config/config')
 
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
+
+const app = express();
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
 
+app.use(require('./routes/usuario'));
 
-app.get('/',function(req,res){
-    res.json("Hola mundo")
+mongoose.connect(process.env.URLDB,(err,res)=>{
+    if(err) throw new err;
+    console.log("Conexión correcta")
 })
-
-app.post('/usuario',function(req,res){
-    let body = req.body;
-
-    res.json({
-        persona:body
-    });
-})
-
-app.put('/',function(req,res){
-    res.json("put json")
-})
-
-
-app.delete('/',function(req,res){
-    res.json("delete json mundo")
-})
-
 
 app.listen(process.env.PORT,()=>{
     console.log("Escuchando",process.env.PORT)
