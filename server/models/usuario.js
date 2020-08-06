@@ -61,4 +61,4 @@ usuarioSchema.methods.toJSON=function(){//cada vez que quieras imprimir el JSON,
 
 usuarioSchema.plugin(uniqueValidator,{message:'{PATH} debe de ser unico'})//el PATH es nombre de la propiedad
 
-module.exports = moongose.model('Usuario',usuarioSchema)
+module.exports = moongose.model('Usuario',usuarioSchema)//'Usuario' crea la collection usuarios
