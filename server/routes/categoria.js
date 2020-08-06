@@ -6,7 +6,6 @@ const { verificaToken  } = require('../middlewares/autenticacion');
 const app = express();
 
 const Categoria =require('../models/categoria');
-const usuario = require('../models/usuario');
 
 app.get('/categoria',verificaToken, (req,res)=>{
     
