@@ -30,12 +30,25 @@ let verificaAdmin_Role = (req,res,next)=>{
         })
     }
 
-
-
-
-    
 }
 
+let verificaTokenImagen = (req,res,next)=>{
+
+    let token =req.query.token;//informacion de la url
+
+    jwt.verify(token,process.env.SEED,(err,decoded)=>{
+        if(err){
+            return res.status(401).json({/*error de autentificación*//*sale del middlewares pero no sigue con la ejecución*/
+                ok:false,
+                err
+            })
+        }
+
+        req.usuario = decoded.usuario;/*información decodificada,el decoded.usuario->usuario es el campo que se puso al crear el token*/ 
+        next()/*sale del middlewares y sigue la ejecucion*/
+    })
+
+}
 
 
 
@@ -43,5 +56,6 @@ let verificaAdmin_Role = (req,res,next)=>{
 
 module.exports={
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaTokenImagen
 }
